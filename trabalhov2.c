@@ -41,16 +41,21 @@ int calDuplo(int chave){
     return duplo;
 }
 
-void InsereNoArquivo(){ //sem consulta se registro existe ainda. 
+void InsereNoArquivo(){ //sem consulta se registro existe ainda.
     struct no novo;
     FILE *fh;
 
-    fh = fopen("testeBin.dat","ab");
+    fh = fopen("testeBin.dat","r+b");
+    if (fh==NULL){
+        fh = fopen("testeBin.dat","w+b");
+    }
+
     printf("Insira seus dados:(Posicao - nome - idade)\n");
     scanf("%d %s %d",&novo.chave,novo.palavra,&novo.idade);
-    fseek(fh,(novo.chave-1)*sizeof(struct no), SEEK_SET);
+    fseek(fh,(novo.chave-1)*sizeof(struct no), SEEK_CUR);
     fwrite(&novo,sizeof(struct no),1,fh);
-
+    //rewind(fh);
+    //fseek(fh,(novo.chave-1)*sizeof(struct no), SEEK_CUR);
     fclose(fh);
     printf("INSERIDO NO ARQUIVO COM SUCESSO!!!\n");
 }
@@ -60,11 +65,10 @@ void ConsultaNoArquivo(){ //sem consulta se registro existe ainda.
     FILE *fh;
     int cont=0;
 
-
-    fh = fopen("testeBin.dat","rb");
+    fh = fopen("testeBin.dat","r+b");
     printf("Seus dados:Posicao - nome - idade\n");
+
     while(!feof(fh)){
-        printf("CONT eh %d\n",cont);
         printf("Seus Dados: %d %s %d\n",novo.chave,novo.palavra,novo.idade);
         fread(&novo,sizeof(struct no), 1, fh);
         cont++;
@@ -75,13 +79,26 @@ void ConsultaNoArquivo(){ //sem consulta se registro existe ainda.
 
 
 int main(){
-	int i;
+    int i;
+    char op;
 
 // for (i = 0; i < 3; ++i){
-// 	InsereNoArquivo();
-// }    
- 
- 	ConsultaNoArquivo();
+//  InsereNoArquivo();
+// }
+
+   //InsereNoArquivo();
+ scanf("%c",&op);
+        
+while(opc=!'e'{    
+    switch(opc){
+
+     case 'i':
+        InsereNoArquivo();
+     case 'c':   
+        ConsultaNoArquivo(); 
+    }
+}
+   
 
     return 0;
 }
